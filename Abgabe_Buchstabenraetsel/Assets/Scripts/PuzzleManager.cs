@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PuzzleManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject Letter;
+    //private TMP_Text text;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        //text = Letter.GetComponentInChildren<TMP_Text>();
+        //text = Random.Range(0, 26);
     }
 }
