@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class PuzzleManager : MonoBehaviour
 {
     private AudioSource rightSound;
     private AudioSource wrongSound;
+    private AudioSource winSound;
 
     private int letterOne;
     private int letterTwo;
@@ -21,6 +23,7 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private List<GameObject> wordThree;
 
     private GameObject winScreen;
+    private TMP_Text timerText;
 
     private float timer;
 
@@ -28,21 +31,28 @@ public class PuzzleManager : MonoBehaviour
     {
         rightSound = GameObject.Find("AudioManager W").GetComponent<AudioSource>();
         wrongSound = GameObject.Find("AudioManager R").GetComponent<AudioSource>();
+        winSound = GameObject.Find("AudioManager Win").GetComponent<AudioSource>();
 
         winScreen = GameObject.Find("Winscreen");
         winScreen.SetActive(false);
+
+        timerText = GameObject.Find("Time").GetComponent<TMP_Text>();
     }
 
     private void Update()
     {
-        if (words < 3)
+        if (words <= 2)
         {
             timer += Time.deltaTime;
+
+            timerText.text = timer.ToString();
         }
 
-        else if (words >= 3)
+        else if (words == 3)
         {
             HasWon();
+
+            words = 5;
         }
     }
 
@@ -157,6 +167,6 @@ public class PuzzleManager : MonoBehaviour
     {
         winScreen.SetActive(true);
 
-        
+        winSound.Play();
     }
 }
