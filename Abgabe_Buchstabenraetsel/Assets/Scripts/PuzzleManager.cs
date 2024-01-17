@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
@@ -10,9 +9,9 @@ public class PuzzleManager : MonoBehaviour
     private AudioSource rightSound;
     private AudioSource wrongSound;
 
-    public int letterOne;
-    public int letterTwo;
-    public int letterThree;
+    private int letterOne;
+    private int letterTwo;
+    private int letterThree;
     [SerializeField] private int words;
 
     private LetterAssignment letterScript;
@@ -21,10 +20,30 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private List<GameObject> wordTwo;
     [SerializeField] private List<GameObject> wordThree;
 
+    private GameObject winScreen;
+
+    private float timer;
+
     private void Awake()
     {
         rightSound = GameObject.Find("AudioManager W").GetComponent<AudioSource>();
         wrongSound = GameObject.Find("AudioManager R").GetComponent<AudioSource>();
+
+        winScreen = GameObject.Find("Winscreen");
+        winScreen.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (words < 3)
+        {
+            timer += Time.deltaTime;
+        }
+
+        else if (words >= 3)
+        {
+            HasWon();
+        }
     }
 
     public void RightLetter(GameObject Letter)
@@ -100,13 +119,14 @@ public class PuzzleManager : MonoBehaviour
         {
             if (letter.GetComponent<LetterAssignment>().isFinished == false)
             {
+                Debug.Log("Hi");
                 letter.GetComponent<Image>().color = Color.white;
                 letter.GetComponent<LetterAssignment>().isClicked = false;
                 letterOne--;
-
-                wordOne.Remove(letter);
             }
         }
+
+        wordOne.Clear();
 
         foreach (GameObject letter in wordTwo)
         {
@@ -115,10 +135,10 @@ public class PuzzleManager : MonoBehaviour
                 letter.GetComponent<Image>().color = Color.white;
                 letter.GetComponent<LetterAssignment>().isClicked = false;
                 letterTwo--;
-
-                wordOne.Remove(letter);
             }
         }
+        
+        wordTwo.Clear();
 
         foreach (GameObject letter in wordThree)
         {
@@ -127,9 +147,16 @@ public class PuzzleManager : MonoBehaviour
                 letter.GetComponent<Image>().color = Color.white;
                 letter.GetComponent<LetterAssignment>().isClicked = false;
                 letterThree--;
-
-                wordOne.Remove(letter);
             }
         }
+        
+        wordThree.Clear();
+    }
+
+    public void HasWon()
+    {
+        winScreen.SetActive(true);
+
+        
     }
 }
