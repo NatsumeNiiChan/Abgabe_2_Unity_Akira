@@ -24,6 +24,7 @@ public class PuzzleManager : MonoBehaviour
 
     private GameObject winScreen;
     private TMP_Text timerText;
+    private TMP_Text highScore;
 
     private float timer;
 
@@ -33,10 +34,11 @@ public class PuzzleManager : MonoBehaviour
         wrongSound = GameObject.Find("AudioManager R").GetComponent<AudioSource>();
         winSound = GameObject.Find("AudioManager Win").GetComponent<AudioSource>();
 
+        timerText = GameObject.Find("Time").GetComponent<TMP_Text>();
+        highScore = GameObject.Find("Points").GetComponent<TMP_Text>();
+
         winScreen = GameObject.Find("Winscreen");
         winScreen.SetActive(false);
-
-        timerText = GameObject.Find("Time").GetComponent<TMP_Text>();
     }
 
     private void Update()
@@ -53,6 +55,13 @@ public class PuzzleManager : MonoBehaviour
             HasWon();
 
             words = 5;
+
+            if (timer < PlayerPrefs.GetFloat("highscore"))
+            {
+                PlayerPrefs.SetFloat("highscore", timer);
+            }
+            
+            highScore.text = PlayerPrefs.GetFloat("highscore").ToString();
         }
     }
 
@@ -60,7 +69,6 @@ public class PuzzleManager : MonoBehaviour
     {
         letterScript = Letter.GetComponent<LetterAssignment>();
 
-        rightSound.Play();
         letterScript.isClicked = true;
 
         if (letterScript.WordOne == true)
@@ -72,6 +80,8 @@ public class PuzzleManager : MonoBehaviour
             if (letterOne >= 3)
             {
                 words++;
+
+                rightSound.Play();
 
                 foreach (GameObject letter in wordOne)
                 {
@@ -90,6 +100,8 @@ public class PuzzleManager : MonoBehaviour
             {
                 words++;
 
+                rightSound.Play();
+
                 foreach (GameObject letter in wordTwo)
                 {
                     letter.GetComponent<LetterAssignment>().isFinished = true;
@@ -106,6 +118,8 @@ public class PuzzleManager : MonoBehaviour
             if (letterThree >= 5)
             {
                 words++;
+
+                rightSound.Play();
 
                 foreach (GameObject letter in wordThree)
                 {

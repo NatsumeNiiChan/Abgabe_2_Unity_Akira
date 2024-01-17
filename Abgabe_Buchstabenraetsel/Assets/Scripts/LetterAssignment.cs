@@ -74,4 +74,13 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
 
         puzzleScript.ResetLetters();
     }
+
+    //public void NewRandom()
+    //{
+    //    if (WordOne == false && WordTwo == false && WordThree == false)
+    //    {
+    //        letter = GetComponentInChildren<TMP_Text>();
+    //        letter.text = alphabet[Random.Range(0, alphabet.Length)].ToString();
+    //    }
+    //}
 }

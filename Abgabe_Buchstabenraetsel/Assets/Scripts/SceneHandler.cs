@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneHandler : MonoBehaviour
 {
@@ -28,5 +29,9 @@ public class SceneHandler : MonoBehaviour
             audioIsOn = true;
             XImage.SetActive(false);
         }
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
