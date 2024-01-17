@@ -39,6 +39,11 @@ public class PuzzleManager : MonoBehaviour
 
         winScreen = GameObject.Find("Winscreen");
         winScreen.SetActive(false);
+
+        if (PlayerPrefs.GetFloat("highscore") == 0)
+        {
+            PlayerPrefs.SetFloat("highscore", 100);
+        }
     }
 
     private void Update()
