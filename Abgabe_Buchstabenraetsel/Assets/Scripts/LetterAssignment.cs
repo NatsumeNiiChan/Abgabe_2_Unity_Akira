@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class LetterAssignment : MonoBehaviour, IPointerDownHandler
 {
+    //Variablen festlegen
     private string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public bool WordOne;
@@ -21,9 +22,11 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
 
     private void Awake()
     {
+        //Findingcalls
         Image = GetComponent<Image>();
         puzzleScript = FindObjectOfType<PuzzleManager>();
 
+        //Buchstaben ohne zugehörigkeit random generieren
         if (WordOne == false && WordTwo == false && WordThree == false)
         {
             letter = GetComponentInChildren<TMP_Text>();
@@ -31,13 +34,16 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    //Maus Event
     public void OnPointerDown(PointerEventData eventData)
     {
+        //Frage ob ein Buchstabe schon angeklickt ist
         if (isClicked == true)
         {
             return;
         }
 
+        //Abfrage ob der Buchstabe einem Wort angehört - die Methode im Puzzlescript wird aufgerufen
         if (WordOne == true)
         {
             Image.color = Color.green;
@@ -56,6 +62,7 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
             puzzleScript.RightLetter(gameObject);
         }
 
+        //Ist der Buchstabe falsch, wird die Puzzlescript Methode aufgerufen und gewartet, dann resettet
         else
         {
             Image.color = Color.red;
@@ -65,6 +72,7 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    //Farbe auf weiss - Resetfunktion des Puzzlescript wird genutzt
     private void Reset()
     {
         if (isFinished == false)
@@ -74,13 +82,4 @@ public class LetterAssignment : MonoBehaviour, IPointerDownHandler
 
         puzzleScript.ResetLetters();
     }
-
-    //public void NewRandom()
-    //{
-    //    if (WordOne == false && WordTwo == false && WordThree == false)
-    //    {
-    //        letter = GetComponentInChildren<TMP_Text>();
-    //        letter.text = alphabet[Random.Range(0, alphabet.Length)].ToString();
-    //    }
-    //}
 }

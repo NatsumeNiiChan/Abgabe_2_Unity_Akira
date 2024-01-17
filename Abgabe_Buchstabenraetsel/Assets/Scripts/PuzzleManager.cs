@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
+    //Festlegen diverser Variabeln, alles private weils nur in diesem Script genutzt wird
+
     private AudioSource rightSound;
     private AudioSource wrongSound;
     private AudioSource winSound;
@@ -30,6 +32,8 @@ public class PuzzleManager : MonoBehaviour
 
     private void Awake()
     {
+        //Findingcalls
+
         rightSound = GameObject.Find("AudioManager W").GetComponent<AudioSource>();
         wrongSound = GameObject.Find("AudioManager R").GetComponent<AudioSource>();
         winSound = GameObject.Find("AudioManager Win").GetComponent<AudioSource>();
@@ -40,6 +44,8 @@ public class PuzzleManager : MonoBehaviour
         winScreen = GameObject.Find("Winscreen");
         winScreen.SetActive(false);
 
+        //Wert vom Highscore festlegen, falls es noch keinen gibt
+
         if (PlayerPrefs.GetFloat("highscore") == 0)
         {
             PlayerPrefs.SetFloat("highscore", 100);
@@ -48,12 +54,16 @@ public class PuzzleManager : MonoBehaviour
 
     private void Update()
     {
+        //abfragen ob schon alle Wörter gefunden wurden - wenn nicht, zählt der Timer, wenn schon kommt die Win condition
+
         if (words <= 2)
         {
             timer += Time.deltaTime;
 
             timerText.text = timer.ToString();
         }
+
+        // Win Condition - ist der timer tiefer als zuvor wird ein neuer Highscore gesetzt
 
         else if (words == 3)
         {
@@ -70,18 +80,25 @@ public class PuzzleManager : MonoBehaviour
         }
     }
 
+    //Methode für die richtigen Buchstaben
+
     public void RightLetter(GameObject Letter)
     {
+        //Script Verlinkung
+
         letterScript = Letter.GetComponent<LetterAssignment>();
 
         letterScript.isClicked = true;
 
+        //Abfrage ob und welchem Wort ein Buchstabe angehört
         if (letterScript.WordOne == true)
         {
             letterOne++;
 
+            //Wort zur Liste Hinzufügen
             wordOne.Add(Letter);
 
+            //Abfrage Ob die Wörter schon komplett sind
             if (letterOne >= 3)
             {
                 words++;
@@ -137,6 +154,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void WrongLetter(GameObject Letter)
     {
+        //Buchstabe aufrufen und Sound spielen
         letterScript = Letter.GetComponent<LetterAssignment>();
 
         wrongSound.Play();
@@ -144,17 +162,19 @@ public class PuzzleManager : MonoBehaviour
 
     public void ResetLetters()
     {
+        //Durch die Liste loopen
         foreach (GameObject letter in wordOne)
         {
+            //Abfrage ob das Wort komplett ist - Farbe, Buchstabencount und Clickstatus zurücksetzen
             if (letter.GetComponent<LetterAssignment>().isFinished == false)
             {
-                Debug.Log("Hi");
                 letter.GetComponent<Image>().color = Color.white;
                 letter.GetComponent<LetterAssignment>().isClicked = false;
                 letterOne--;
             }
         }
 
+        //Liste leeren
         wordOne.Clear();
 
         foreach (GameObject letter in wordTwo)
@@ -184,6 +204,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void HasWon()
     {
+        //Winscreen und Sound aktivieren
         winScreen.SetActive(true);
 
         winSound.Play();

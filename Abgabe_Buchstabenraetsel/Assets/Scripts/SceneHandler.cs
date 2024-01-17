@@ -5,17 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class SceneHandler : MonoBehaviour
 {
+    //Variablen festlegen
     [SerializeField] private bool audioIsOn;
     [SerializeField] private AudioListener audioListener;
     [SerializeField] private GameObject XImage;
 
     private void Awake()
     {
+        //Findingcall
         audioListener = FindObjectOfType<AudioListener>();
     }
 
     public void SoundButton()
     {
+        //Audiolistener deaktivieren/aktivieren
         if (audioIsOn == true)
         {
             audioListener.enabled = false;
@@ -32,6 +35,7 @@ public class SceneHandler : MonoBehaviour
     }
     public void RestartGame()
     {
+        //Scene neu laden
         SceneManager.LoadScene(0);
     }
 }
